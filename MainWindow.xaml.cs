@@ -1,10 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: CompactTaskManager.MainWindow
-// Assembly: TaskMgrFastlyDone, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 409FCC5A-E48A-4399-B2D8-6D6B7943CC1D
-// Assembly location: C:\Users\Adam\Desktop\TaskMgrFastlyDone.exe
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
