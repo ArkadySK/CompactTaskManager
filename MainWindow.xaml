@@ -6,12 +6,39 @@
         xmlns:local="clr-namespace:CompactTaskManager"
         Loaded="Window_Loaded" Title="Compact Task Manager" Height="450" Width="800"
         Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+    <Window.Resources>
+        <MenuItem Header="File" x:Key="processMenu" PreviewMouseUp="ContextMenu_PreviewMouseUp">
+            <MenuItem Header="Kill"/>
+            <MenuItem Header="Kill All Processes This Name"/>
+            <MenuItem Header="Focus"/>
+            <Separator/>
+            <MenuItem Header="Minimize"/>
+            <MenuItem Header="Maximize"/>
+            <MenuItem Header="Restore"/>
+            <Separator/>
+            <MenuItem Header="Open File Location"/>
+            <MenuItem Header="Start New Instance"/>
+        </MenuItem>
+        <ContextMenu x:Key="processContextMenu" PreviewMouseUp="ContextMenu_PreviewMouseUp">
+            <MenuItem Header="Kill"/>
+            <MenuItem Header="Kill All Processes This Name"/>
+            <MenuItem Header="Focus"/>
+            <Separator/>
+            <MenuItem Header="Minimize"/>
+            <MenuItem Header="Maximize"/>
+            <MenuItem Header="Restore"/>
+            <Separator/>
+            <MenuItem Header="Open File Location"/>
+            <MenuItem Header="Start New Instance"/>
+        </ContextMenu>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu>
+            <StaticResource ResourceKey="processMenu"/>
             <MenuItem Header="Options">
                 <MenuItem Header="Refresh speed">
                     <MenuItem Click="MenuItem_Click_1" Header="Fast (1s)"/>
@@ -27,22 +54,9 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ListView ButtonBase.Click="processesListView_Click" SelectionChanged="processesListView_SelectionChanged"
+            <ListView ButtonBase.Click="processesListView_Click" SelectionChanged="processesListView_SelectionChanged" ContextMenu="{StaticResource processContextMenu}"
                 x:Name="processesListView">
-                <FrameworkElement.ContextMenu>
-                    <ContextMenu PreviewMouseUp="ContextMenu_PreviewMouseUp">
-                        <MenuItem Header="Kill"/>
-                        <MenuItem Header="Kill All Processes This Name"/>
-                        <MenuItem Header="Focus"/>
-                        <Separator/>
-                        <MenuItem Header="Minimize"/>
-                        <MenuItem Header="Maximize"/>
-                        <MenuItem Header="Restore"/>
-                        <Separator/>
-                        <MenuItem Header="Open File Location"/>
-                        <MenuItem Header="Start New Instance"/>
-                    </ContextMenu>
-                </FrameworkElement.ContextMenu>
+                
                 <ListView.View>
                     <GridView AllowsColumnReorder="true">
                         <GridViewColumn Header="Id" Width="50" DisplayMemberBinding="{Binding Id}"/>
