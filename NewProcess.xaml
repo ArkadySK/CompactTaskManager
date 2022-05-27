@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CompactTaskManager"
-        Title="New Task..." Height="140" Width="600" ResizeMode="NoResize">
+        Title="New Task..." SizeToContent="Height" Width="600" ResizeMode="NoResize">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -19,7 +19,7 @@
         <Label Grid.Row="1" Content="Command line arguments:"/>
         <TextBox x:Name="pathTextBox" Grid.Column="1" Grid.Row="0" Margin="0 5 40 5"/>
         <Button Click="locateExeButton_Click" x:Name="locateExeButton" Grid.Column="1" Grid.Row="0"
-            Content="Locate..." Width="40" FontSize="8" Margin="0 5" HorizontalAlignment="Right"/>
+            Content="..." Width="40" Margin="0 5" HorizontalAlignment="Right"/>
         <TextBox x:Name="argumentsTextBox" Grid.Column="1" Grid.Row="1" Margin="0 5"/>
         <Button Click="Button_Click" Content="Run" Grid.Column="1" Grid.Row="2"
             Style="{StaticResource StandardButton}" HorizontalAlignment="Right"/>
