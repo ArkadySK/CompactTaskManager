@@ -64,6 +64,8 @@ namespace CompactTaskManager
         private async void processesListView_Click(object sender, RoutedEventArgs e)
         {
             GridViewColumn clickedColumn = (e.OriginalSource as GridViewColumnHeader).Column;
+            if (clickedColumn == null)
+                return;
 
             //if you click on the same header multiple times, it will change ascending / descending type
             if (clickedColumn.Header.ToString() == columnHeader)
