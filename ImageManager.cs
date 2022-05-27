@@ -48,7 +48,11 @@ namespace CompactTaskManager
                 return null;
             if (IgnoredPaths.Contains(fileName))
                 return null;
-            
+
+            // This variable checks if CachedImages is ready
+            bool hasNull = CachedImages.TrueForAll(ii => ii != null);
+            if (!hasNull) return null;
+
             var foundIcon = CachedImages.FirstOrDefault(ico => ico.Item2 == fileName);
             if (foundIcon != null) 
                 return foundIcon.Item1 as ImageSource;
