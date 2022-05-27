@@ -59,29 +59,30 @@ namespace CompactTaskManager
             {
                 process.Dispose();
             }
-            /*
-            if (string.IsNullOrEmpty(FileName))
-            {
-                bool flag = false;
-                string[] folders = new string[3]
+
+            if (isAdmin)
+                if (string.IsNullOrEmpty(FileName))
                 {
-                  "C:\\Windows\\",
-                  "C:\\Windows\\System32\\",
-                  "C:\\Windows\\SysWOW64\\"
-                };
-                foreach (string f in folders)
-                {
-                    if (!flag)
+                    bool found = false;
+                    string[] folders = new string[3]
                     {
-                        FileInfo fileInfo = new FileInfo(f + ShortName);
-                        if (fileInfo.Exists)
+                      "C:\\Windows\\",
+                      "C:\\Windows\\System32\\",
+                      "C:\\Windows\\SysWOW64\\"
+                    };
+                    foreach (string f in folders)
+                    {
+                        if (!found)
                         {
-                            flag = true;
-                            FileName = fileInfo.FullName;
+                            FileInfo fileInfo = new FileInfo(f + ShortName);
+                            if (fileInfo.Exists)
+                            {
+                                found = true;
+                                FileName = fileInfo.FullName;
+                            }
                         }
                     }
                 }
-            }*/
             ExeIcon = GetIcon();
             if (ExeIcon == null)
             {
