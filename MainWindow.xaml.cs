@@ -62,8 +62,10 @@ namespace CompactTaskManager
         /// </summary>
         private void ProcessViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (ProcessViewModel.IsProcessing) return;
             processesListView.Items.Refresh();
             processesCountLabel.Content = "Processes count: " + ProcessViewModel.AllProcesses.Count.ToString();
+            processesListView.ItemsSource = ProcessViewModel.AllProcesses;
         }
         #endregion
 
