@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -38,20 +39,20 @@ namespace CompactTaskManager
 
         private async void ResetCacheTimer_Tick(object sender, EventArgs e)
         {
-            ImageManager.CleanCache();
+            await Task.Run(() => ImageManager.CleanCache());
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = ProcessViewModel;
             ProcessViewModel.PropertyChanged += new PropertyChangedEventHandler(ProcessViewModel_PropertyChanged);
-            processesListView.ItemsSource = ProcessViewModel.AllProcesses;
         }
         #endregion
 
         #region Update UI
         private async void DispatcherTimer_Tick(object sender, EventArgs e)
         {
+            if (ProcessViewModel.IsProcessing) return;
             await ProcessViewModel.UpdateProcesses();
             await ProcessViewModel.SortProcesses(columnHeader, sortAscending);
         }
@@ -62,7 +63,6 @@ namespace CompactTaskManager
         private void ProcessViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             processesListView.Items.Refresh();
-            processesListView.ItemsSource = ProcessViewModel.AllProcesses;
             processesCountLabel.Content = "Processes count: " + ProcessViewModel.AllProcesses.Count.ToString();
         }
         #endregion

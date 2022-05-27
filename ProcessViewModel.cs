@@ -13,7 +13,7 @@ namespace CompactTaskManager
     public class ProcessViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged; // interface property
-
+        public bool IsProcessing { get; set; }
         public ProcessModel SelectedProcess { get; set; } //selected process
         public bool IsAdmin { get; set; } = true; //are admin rights allowed?
         public bool MinimalMode { get; set; } = true; //show only programs that have main thread (result of it is the same as taskbar)
@@ -64,6 +64,7 @@ namespace CompactTaskManager
 
         public async Task UpdateProcesses()
         {
+            IsProcessing = true;
             List<Task> processTasks = new List<Task>();
             Process[] processes = Process.GetProcesses();
             List<ProcessModel> processesToRemove = AllProcesses.ToList();
@@ -92,19 +93,23 @@ namespace CompactTaskManager
             processTasks = null;
             processes = null;
             processesToRemove = null;
+            IsProcessing = false;
         }
 
         public async Task UpdateMinimalisticProcesses()
         {
+            IsProcessing = true;
             ObservableCollection<ProcessModel> observableCollection = await Task.Run(() => new ObservableCollection<ProcessModel>(AllProcesses.Where(proc => proc != null).Where(proc => proc.Title != string.Empty).OrderBy(proc => proc.Id)));
             AllProcesses = observableCollection;
             observableCollection = null;
             await Task.Delay(100);
             NotifyPropertyChanged(nameof(UpdateMinimalisticProcesses));
+            IsProcessing = false;
         }
 
         public async Task SortProcesses(string propertyToOrderBy, bool ascending)
         {
+            IsProcessing = true;
             IOrderedEnumerable<ProcessModel> sortProcessesQuery = null;
             switch(propertyToOrderBy)
             {
@@ -134,8 +139,9 @@ namespace CompactTaskManager
             ObservableCollection<ProcessModel> observableCollection = await Task.Run(() => new ObservableCollection<ProcessModel>(sortProcessesQuery));
             AllProcesses = observableCollection;
             observableCollection = null;
+            IsProcessing = false;
             await Task.Delay(10);
-            NotifyPropertyChanged(nameof(SortProcesses));
+            NotifyPropertyChanged();
         }
 
         public void EndProcess() => SelectedProcess.Kill();
