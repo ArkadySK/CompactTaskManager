@@ -10,7 +10,8 @@ namespace CompactTaskManager
     public partial class MainWindow : Window
     {
         private string columnHeader;
-        private DispatcherTimer dispatcherTimer;
+        private DispatcherTimer refreshUITimer;
+        private DispatcherTimer cleanCacheTimer;
         private bool sortAscending;
 
         public ProcessViewModel ProcessViewModel { get; set; } = new ProcessViewModel();
@@ -20,20 +21,30 @@ namespace CompactTaskManager
         {
             InitializeComponent();
             //create a new timer for refreshing of UI
-            dispatcherTimer = new DispatcherTimer()
+            refreshUITimer = new DispatcherTimer()
             {
                 Interval = TimeSpan.FromSeconds(1.0)
             };
-            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-            dispatcherTimer.Start();
+            refreshUITimer.Tick += new EventHandler(DispatcherTimer_Tick);
+            refreshUITimer.Start();
+
+            cleanCacheTimer = new DispatcherTimer()
+            {
+                Interval = TimeSpan.FromMinutes(2)
+            };
+            cleanCacheTimer.Tick += ResetCacheTimer_Tick;
+            cleanCacheTimer.Start();
+        }
+
+        private async void ResetCacheTimer_Tick(object sender, EventArgs e)
+        {
+            ImageManager.CleanCache();
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = ProcessViewModel;
             ProcessViewModel.PropertyChanged += new PropertyChangedEventHandler(ProcessViewModel_PropertyChanged);
-            await ProcessViewModel.UpdateProcesses();
-            await ProcessViewModel.SortProcesses(columnHeader, sortAscending);
             processesListView.ItemsSource = ProcessViewModel.AllProcesses;
         }
         #endregion
@@ -190,13 +201,13 @@ namespace CompactTaskManager
 
         private void MenuItem_Click(object sender, RoutedEventArgs e) => Topmost = !Topmost;
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e) => dispatcherTimer.Interval = TimeSpan.FromSeconds(1.0);
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e) => refreshUITimer.Interval = TimeSpan.FromSeconds(1.0);
 
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e) => dispatcherTimer.Interval = TimeSpan.FromSeconds(2.0);
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e) => refreshUITimer.Interval = TimeSpan.FromSeconds(2.0);
 
-        private void MenuItem_Click_3(object sender, RoutedEventArgs e) => dispatcherTimer.Interval = TimeSpan.FromSeconds(4.0);
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e) => refreshUITimer.Interval = TimeSpan.FromSeconds(4.0);
 
-        private void MenuItem_Click_4(object sender, RoutedEventArgs e) => dispatcherTimer.Interval = TimeSpan.FromSeconds(10.0);
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e) => refreshUITimer.Interval = TimeSpan.FromSeconds(10.0);
         #endregion 
     }
 }

@@ -66,5 +66,11 @@ namespace CompactTaskManager
             CachedImages.Add(new Tuple<ImageSource, string>(icon, fileName));
             return icon;
         }
+
+        public static void CleanCache()
+        {
+            CachedImages.Clear();
+            IgnoredPaths.Clear();
+        }
     }
 }
