@@ -16,7 +16,7 @@ namespace CompactTaskManager
     /// </summary>
     public static class ImageManager
     {
-        private static List<Tuple<ImageSource, string>> CachedImages = new List<Tuple<ImageSource, string>>();
+        private static List<Tuple<ImageSource, string>> CachedImages = new List<Tuple<ImageSource, string>>() { };
         private static List<string> IgnoredPaths = new List<string>();
 
 

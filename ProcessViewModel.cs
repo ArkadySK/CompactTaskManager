@@ -47,10 +47,11 @@ namespace CompactTaskManager
 
         private void AddTask(Process process)
         {
-            if (Application.Current.Dispatcher == null || string.IsNullOrEmpty(process.ProcessName) || MinimalMode && string.IsNullOrEmpty(process.MainWindowTitle))
-            {
+            if (Application.Current == null|| string.IsNullOrEmpty(process.ProcessName)) 
                 return;
-            }
+
+            if (Application.Current.Dispatcher == null || MinimalMode && string.IsNullOrEmpty(process.MainWindowTitle))
+                return;
 
             ProcessModel processModel = new ProcessModel(process, IsAdmin);
             if (AllProcesses.Contains(processModel))
