@@ -83,7 +83,7 @@ namespace CompactTaskManager
                         }
                     }
                 }
-            ExeIcon = GetIcon();
+            ExeIcon = ImageManager.GetIcon(FileName);
             if (ExeIcon == null)
             {
                 return;
@@ -92,16 +92,6 @@ namespace CompactTaskManager
             ExeIcon.Freeze();
         }
 
-        private ImageSource GetIcon()
-        {
-            if (string.IsNullOrEmpty(FileName))
-            {
-                return null;
-            }
-
-            Icon associatedIcon = Icon.ExtractAssociatedIcon(FileName);
-            return associatedIcon == null ? null : ImageSourceForBitmap(associatedIcon.ToBitmap());
-        }
 
         public void Minimize() => WindowsAPICaller.ShowWindow(hWnd, 6);
 
@@ -151,24 +141,5 @@ namespace CompactTaskManager
             }
         }
 
-        [DllImport("gdi32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool DeleteObject([In] IntPtr hObject);
-
-        private ImageSource ImageSourceForBitmap(Bitmap bmp)
-        {
-            IntPtr hbitmap = bmp.GetHbitmap();
-            try
-            {
-                ImageSource sourceFromHbitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                ProcessModel.DeleteObject(hbitmap);
-                return sourceFromHbitmap;
-            }
-            catch (Exception)
-            {
-                ProcessModel.DeleteObject(hbitmap);
-                return null;
-            }
-        }
     }
 }
