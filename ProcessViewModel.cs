@@ -131,14 +131,14 @@ namespace CompactTaskManager
             }
                 
 
-            if (!ascending) //if ascending, reverse query
+            if (!ascending) // If descending, reverse query
             {
-                await Task.Run(() => sortProcessesQuery.Reverse());
+                IEnumerable<ProcessModel> sortProcessesQuery2 = await Task.Run(() => sortProcessesQuery.Reverse());
+                AllProcesses = await Task.Run(() => new ObservableCollection<ProcessModel>(sortProcessesQuery2));
             }
+            else
+                AllProcesses = await Task.Run(() => new ObservableCollection<ProcessModel>(sortProcessesQuery));
 
-            ObservableCollection<ProcessModel> observableCollection = await Task.Run(() => new ObservableCollection<ProcessModel>(sortProcessesQuery));
-            AllProcesses = observableCollection;
-            observableCollection = null;
             IsProcessing = false;
             await Task.Delay(10);
             NotifyPropertyChanged();
